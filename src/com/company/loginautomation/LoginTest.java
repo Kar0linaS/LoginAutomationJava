@@ -3,6 +3,7 @@ package com.company.loginautomation;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class LoginTest {
@@ -48,8 +49,23 @@ public class LoginTest {
     }
 
     private static void insertCredentials(WebDriver browser, String login, String password) {
-        browser.findElement(By.id("user_email")).sendKeys(login);
-        browser.findElement(By.id("user_password")).sendKeys(password);
+        WebElement elementEmail = browser.findElement(By.id("user_email"));
+        elementEmail.sendKeys(login);
+
+        WebElement elementPassword = browser.findElement(By.id("user_password"));
+        elementPassword.sendKeys(password);
+
+        if(elementEmail.getAttribute("value").equals(login)) {
+            System.out.println("Email has been written correctly");
+        } else {
+            System.out.println("Email has not been written correctly");
+        }
+
+        if(elementPassword.getAttribute("value").equals(password)) {
+            System.out.println("Password has been written correctly");
+        } else {
+            System.out.println("Password has not been written correctly");
+        }
     }
 
     private static void clickLogin(WebDriver browser) {
@@ -62,6 +78,14 @@ public class LoginTest {
             System.out.println("User logged in");
         } catch (NoSuchElementException e) {
             System.out.println("User not logged in");
+        }
+
+        WebElement loginMessage = browser.findElement(By.id("notifications"));
+
+        if(loginMessage.getText().equals("Signed in successfully.")) {
+            System.out.println("Signed in successfully");
+        } else if(loginMessage.getText().equals("Invalid Email or password.")) {
+            System.out.println("Invalid Email or password.");
         }
     }
 
